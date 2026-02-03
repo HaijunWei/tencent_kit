@@ -55,6 +55,7 @@ enum TencentRetCode {
     } else if ([@"registerApp" isEqualToString:call.method]) {
         NSString *appId = call.arguments[@"appId"];
         NSString *universalLink = call.arguments[@"universalLink"];
+        NSString *appKey = call.arguments[@"appKey"];  // 可选，鸿蒙分享签名用，iOS 暂未使用
         if (universalLink != nil) {
             _oauth = [[TencentOAuth alloc] initWithAppId:appId
                                         andUniversalLink:universalLink

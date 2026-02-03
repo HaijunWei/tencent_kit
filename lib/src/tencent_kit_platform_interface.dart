@@ -34,12 +34,14 @@ abstract class TencentKitPlatform extends PlatformInterface {
   }
 
   /// 向 Open_SDK 注册
+  /// [appKey] 可选，鸿蒙端分享签名需传入，其他端暂未使用
   Future<void> registerApp({
     required String appId,
     String? universalLink,
+    String? appKey,
   }) {
     throw UnimplementedError(
-        'registerApp({required appId, universalLink}) has not been implemented.');
+        'registerApp({required appId, universalLink, appKey}) has not been implemented.');
   }
 
   ///

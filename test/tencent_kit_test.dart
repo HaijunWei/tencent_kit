@@ -20,6 +20,7 @@ class MockTencentKitPlatform
   Future<void> registerApp({
     required String appId,
     String? universalLink,
+    String? appKey,
   }) async {
     throw UnimplementedError();
   }

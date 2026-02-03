@@ -140,7 +140,8 @@ public class TencentKitPlugin implements FlutterPlugin, ActivityAware, ActivityR
             result.success(null);
         } else if ("registerApp".equals(call.method)) {
             final String appId = call.argument("appId");
-//            final String universalLink = call.argument("universalLink");
+            // final String universalLink = call.argument("universalLink");
+            // final String appKey = call.argument("appKey"); // 可选，鸿蒙分享签名用，Android 暂未使用
             String authority = null;
             try {
                 ProviderInfo providerInfo = applicationContext.getPackageManager().getProviderInfo(new ComponentName(applicationContext, TencentKitFileProvider.class), PackageManager.MATCH_DEFAULT_ONLY);

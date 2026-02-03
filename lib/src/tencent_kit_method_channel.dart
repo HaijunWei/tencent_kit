@@ -46,12 +46,14 @@ class MethodChannelTencentKit extends TencentKitPlatform {
   Future<void> registerApp({
     required String appId,
     String? universalLink,
+    String? appKey,
   }) {
     return methodChannel.invokeMethod<void>(
       'registerApp',
       <String, dynamic>{
         'appId': appId,
-        if (universalLink?.isNotEmpty ?? false) 'universalLink': universalLink,
+        if (universalLink != null) 'universalLink': universalLink,
+        if (appKey != null) 'appKey': appKey,
       },
     );
   }
