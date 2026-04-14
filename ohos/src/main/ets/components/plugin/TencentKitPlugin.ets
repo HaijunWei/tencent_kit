@@ -20,6 +20,7 @@ import {
 } from '@tencent/qq-open-sdk'
 import { AbilityConstant, Want } from '@kit.AbilityKit';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
+import { fileUri } from '@kit.CoreFileKit';
 import { buffer } from '@kit.ArkTS';
 
 /** 分享到空间 shareJson 结构 */
@@ -260,6 +261,23 @@ export default class TencentKitPlugin implements FlutterPlugin, MethodCallHandle
       });
   }
 
+  private normalizeShareUri(imageUri: string): string {
+    if (imageUri.length === 0) {
+      return imageUri;
+    }
+    if (imageUri.startsWith("file://")) {
+      let filePath = decodeURIComponent(imageUri.substring("file://".length));
+      if (!filePath.startsWith("/")) {
+        filePath = "/" + filePath;
+      }
+      return fileUri.getUriFromPath(filePath);
+    }
+    if (imageUri.startsWith("/")) {
+      return fileUri.getUriFromPath(imageUri);
+    }
+    return imageUri;
+  }
+
   private shareMood(call: MethodCall, result: MethodResult): void {
     const scene: number = call.argument("scene") as number;
     if (scene !== 1) {
@@ -271,7 +289,7 @@ export default class TencentKitPlugin implements FlutterPlugin, MethodCallHandle
     const j = new ShareJsonQZone();
     j.title = summary ?? "";
     j.summary = summary ?? "";
-    j.targetUrl = "https://www.qq.com";
+    j.targetUrl = "";
     j.imageUrls = imageUris ?? [];
     this.buildShareDataAsync(JSON.stringify(j)).then((shareData: ShareData) => {
       this.doShare(SHARE_TYPE_QZONE, shareData);
@@ -291,7 +309,7 @@ export default class TencentKitPlugin implements FlutterPlugin, MethodCallHandle
     const imageUri: string = call.argument("imageUri") as string;
     const j = new ShareJsonArkImage();
     j.msg_style = 6;
-    j.share_uris = [imageUri];
+    j.share_uris = [this.normalizeShareUri(imageUri)];
     this.buildShareDataAsync(JSON.stringify(j)).then((shareData: ShareData) => {
       this.doShare(SHARE_TYPE_ARK, shareData);
       result.success(null);
